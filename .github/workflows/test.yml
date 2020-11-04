@@ -3,24 +3,23 @@ name: Tests
 on:
   push:
     branches:
-    - develop
-    - master
+      - develop
+      - master
     paths:
-    - 'Tools/UnityLicense.ulf'
-    - 'UnityProject/**'
-    - '.github/workflows/**'
-    - 'Docker/**'
+      - "Tools/UnityLicense.ulf"
+      - "UnityProject/**"
+      - ".github/workflows/**"
+      - "Docker/**"
   pull_request:
     branches:
-    - develop
-    - master
+      - develop
+      - master
     paths:
-    - 'Tools/UnityLicense.ulf'
-    - 'UnityProject/**'
-    - '.github/workflows/**'
+      - "Tools/UnityLicense.ulf"
+      - "UnityProject/**"
+      - ".github/workflows/**"
 
 jobs:
-
   ########## HOW TO UPDATE UNITY_LICENSE ##########
   # The job below is only used to request a new activation file
   #
@@ -62,7 +61,7 @@ jobs:
         projectPath:
           - UnityProject
         unityVersion:
-#           - 2019.3.15f1
+          # - 2019.3.15f1
           - 2020.1.6f1
         targetPlatform:
           - StandaloneWindows64
@@ -72,23 +71,23 @@ jobs:
         uses: actions/checkout@v2.0.0
 
       # Cache the library directory to speed up builds
-    #  - name: Cache library directory
-    #    uses: actions/cache@v1.1.0
-    #    with:
-    #      path: ${{ matrix.projectPath }}/Library
-    #      key: Library2-${{ matrix.projectPath }}-${{ matrix.targetPlatform }}
-    #      restore-keys: |
-    #        Library2-${{ matrix.projectPath }}-${{ matrix.targetPlatform }}
-    #        Library2-${{ matrix.projectPath }}-
-    #        Library2-
-    #
+      #  - name: Cache library directory
+      #    uses: actions/cache@v1.1.0
+      #    with:
+      #      path: ${{ matrix.projectPath }}/Library
+      #      key: Library2-${{ matrix.projectPath }}-${{ matrix.targetPlatform }}
+      #      restore-keys: |
+      #        Library2-${{ matrix.projectPath }}-${{ matrix.targetPlatform }}
+      #        Library2-${{ matrix.projectPath }}-
+      #        Library2-
+      #
       # Set the UNITY_LICENSE environment variable
       - name: Setup license
         # This step:
         #   - Grabs the license file contents from the $LICENSE_FILE_PATH
         #   - Uses substitution to escape newline characters for GitHub Actions set-env.
         #     (from: https://github.community/t5/GitHub-Actions/set-output-Truncates-Multiline-Strings/td-p/37870)
-        #   - Set the UNITY_LICENSE env var for all future steps using special GitHub Actions syntax
+        #   - Set the UNITY_LICENSE env var for all future steps using special GitHub Actions file
         env:
           LICENSE_FILE_PATH: ./Tools/UnityLicense.ulf
         run: |
@@ -96,13 +95,13 @@ jobs:
           license="${license//'%'/'%25'}"
           license="${license//$'\n'/'%0A'}"
           license="${license//$'\r'/'%0D'}"
-          echo "::set-env name=UNITY_LICENSE::$license"
+          echo "UNITY_LICENSE=$license" >> $GITHUB_ENV
 
       # Run tests - only edit mode supported
       - name: Run tests
         uses: webbertakken/unity-test-runner@v1.6
         with:
-          customParameters: '-nographics'
+          customParameters: "-nographics"
           projectPath: ${{ matrix.projectPath }}
           unityVersion: ${{ matrix.unityVersion }}
           artifactsPath: ./testReports/${{ matrix.targetPlatform }}
@@ -113,7 +112,7 @@ jobs:
         if: always()
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '2.1.202'
+          dotnet-version: "2.1.202"
 
       # Do the report magic
       - name: Generate .html report

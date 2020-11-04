@@ -4,7 +4,7 @@ on:
     branches:
       - develop
     paths:
-      - 'docs/**'
+      - "docs/**"
 
 jobs:
   build:
@@ -14,7 +14,7 @@ jobs:
       - name: Checkout master
         uses: actions/checkout@v1
         with:
-          ref: 'develop'
+          ref: "develop"
 
       - name: Deploy docs
         uses: mhausenblas/mkdocs-deploy-gh-pages@master
