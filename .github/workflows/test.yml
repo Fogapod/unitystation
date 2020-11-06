@@ -89,6 +89,10 @@ jobs:
           echo "$LICENSE_FILE_PATH" >> "$GITHUB_ENV"
           printf "\nLICENSE-EOF" >> "$GITHUB_ENV"
 
+      - name: test
+        run: |
+          echo $UNITY_LICENSE
+
       # Run tests - only edit mode supported
       - name: Run tests
         uses: webbertakken/unity-test-runner@v1.6
