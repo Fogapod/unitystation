@@ -86,7 +86,7 @@ jobs:
           LICENSE_FILE_PATH: ./Tools/UnityLicense.ulf
         run: |
           echo 'UNITY_LICENSE<<LICENSE-EOF' >> "$GITHUB_ENV"
-          echo "$LICENSE_FILE_PATH" >> "$GITHUB_ENV"
+          cat "$LICENSE_FILE_PATH" >> "$GITHUB_ENV"
           printf "\nLICENSE-EOF" >> "$GITHUB_ENV"
 
       - name: test
